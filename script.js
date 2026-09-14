@@ -1,25 +1,25 @@
 /* ---------- Datos de prueba (prototipo) ---------- */
 const cars = [
-  { id:1, name:'Porsche 911 Carrera', desc:'Deportivo icónico alemán', price:145000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Porsche+911' },
-  { id:2, name:'Audi R8 V10', desc:'Motor V10 aspirado naturalmente', price:165000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Audi+R8' },
-  { id:3, name:'Ford Mustang GT', desc:'Muscle car clásico americano', price:58000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Mustang+GT' },
-  { id:4, name:'Subaru WRX STI', desc:'Tracción integral de rally', price:42000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Subaru+WRX' },
-  { id:5, name:'Nissan GT-R Nismo', desc:'El "Godzilla" japonés', price:215000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Nissan+GT-R' },
-  { id:6, name:'Audi R8 Spyder', desc:'Versión convertible del R8', price:175000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Audi+R8+Spyder' },
-  { id:7, name:'Ford Mustang Shelby', desc:'Edición de alto rendimiento', price:75000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Shelby+GT500' },
-  { id:8, name:'Subaru WRX Rally', desc:'Preparado para competencia', price:48000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=WRX+Rally' },
+  { id:1, name:'Porsche 911 Carrera', desc:'Deportivo icónico alemán', price:14500000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Porsche+911' },
+  { id:2, name:'Audi R8 V10', desc:'Motor V10 aspirado naturalmente', price:16500000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Audi+R8' },
+  { id:3, name:'Ford Mustang GT', desc:'Muscle car clásico americano', price:5800000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Mustang+GT' },
+  { id:4, name:'Subaru WRX STI', desc:'Tracción integral de rally', price:4200000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Subaru+WRX' },
+  { id:5, name:'Nissan GT-R Nismo', desc:'El "Godzilla" japonés', price:21500000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Nissan+GT-R' },
+  { id:6, name:'Audi R8 Spyder', desc:'Versión convertible del R8', price:17500000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Audi+R8+Spyder' },
+  { id:7, name:'Ford Mustang Shelby', desc:'Edición de alto rendimiento', price:7500000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=Shelby+GT500' },
+  { id:8, name:'Subaru WRX Rally', desc:'Preparado para competencia', price:4800000, img:'https://placehold.co/600x400/1a1a1e/e2273f?text=WRX+Rally' },
 ];
 
 const rines = [
-  { id:1, name:'Model R-5', price:249, img:'https://placehold.co/300x300/101014/e2273f?text=R-5' },
-  { id:2, name:'GTR Performance', price:240, img:'https://placehold.co/300x300/101014/e2273f?text=GTR' },
-  { id:3, name:'Model R-5 Sport', price:299, img:'https://placehold.co/300x300/101014/e2273f?text=R-5+S' },
-  { id:4, name:'GTR Performance Pro', price:349, img:'https://placehold.co/300x300/101014/e2273f?text=GTR+Pro' },
-  { id:5, name:'Vortex X1', price:210, img:'https://placehold.co/300x300/101014/e2273f?text=X1' },
-  { id:6, name:'Vortex X1 Black', price:225, img:'https://placehold.co/300x300/101014/e2273f?text=X1+B' },
-  { id:7, name:'Apex Carbon', price:399, img:'https://placehold.co/300x300/101014/e2273f?text=Apex' },
-  { id:8, name:'Apex Carbon Pro', price:429, img:'https://placehold.co/300x300/101014/e2273f?text=Apex+Pro' },
-  { id:9, name:'Storm Racing', price:189, img:'https://placehold.co/300x300/101014/e2273f?text=Storm' },
+  { id:1, name:'Model R-5', price:249000, img:'https://placehold.co/300x300/101014/e2273f?text=R-5' },
+  { id:2, name:'GTR Performance', price:240000, img:'https://placehold.co/300x300/101014/e2273f?text=GTR' },
+  { id:3, name:'Model R-5 Sport', price:299000, img:'https://placehold.co/300x300/101014/e2273f?text=R-5+S' },
+  { id:4, name:'GTR Performance Pro', price:349000, img:'https://placehold.co/300x300/101014/e2273f?text=GTR+Pro' },
+  { id:5, name:'Vortex X1', price:210000, img:'https://placehold.co/300x300/101014/e2273f?text=X1' },
+  { id:6, name:'Vortex X1 Black', price:225000, img:'https://placehold.co/300x300/101014/e2273f?text=X1+B' },
+  { id:7, name:'Apex Carbon', price:399000, img:'https://placehold.co/300x300/101014/e2273f?text=Apex' },
+  { id:8, name:'Apex Carbon Pro', price:429000, img:'https://placehold.co/300x300/101014/e2273f?text=Apex+Pro' },
+  { id:9, name:'Storm Racing', price:189000, img:'https://placehold.co/300x300/101014/e2273f?text=Storm' },
 ];
 
 const colors = [
