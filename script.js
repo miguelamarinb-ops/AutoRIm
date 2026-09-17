@@ -30,7 +30,7 @@ const colors = [
   { name:'Blanco Perla', hex:'#f0f0f0' },
 ];
 
-const FEATURED_CAR_ID = 5; // Nissan GT-R como carro destacado del home
+const FEATURED_CAR_ID = 5;
 
 /* ---------- Estado global ---------- */
 const state = {
@@ -52,7 +52,11 @@ const colorName = (hex) => (colors.find(c => c.hex === hex) || {}).name || '';
 function showView(name){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + name).classList.add('active');
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.view === name));
+  document.querySelectorAll('.nav-link-custom').forEach(l => {
+    const isActive = l.dataset.view === name;
+    l.classList.toggle('active', isActive);
+    l.classList.toggle('text-secondary', !isActive);
+  });
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
@@ -66,11 +70,13 @@ function renderFeaturedCar(){
 function renderPricingPanel(){
   const grid = document.getElementById('pricingGrid');
   grid.innerHTML = rines.slice(0, 4).map(r => `
-    <div class="pricing-card">
-      <span class="price-tag">${formatPrice(r.price)}</span>
-      <img src="${r.img}" alt="${r.name}">
-      <p>${r.name}</p>
-      <button onclick="showView('catalogo-rines')">Ver Detalles</button>
+    <div class="col-6">
+      <div class="bg-surface-2 border border-custom rounded-3 p-2 text-center position-relative h-100">
+        <span class="position-absolute top-0 end-0 bg-danger text-white rounded px-2 py-1 m-1" style="font-size:0.65rem;">${formatPrice(r.price)}</span>
+        <img src="${r.img}" class="rounded-circle object-fit-cover my-2" style="width:60px; height:60px;" alt="${r.name}">
+        <p class="small fw-semibold mb-2 text-truncate">${r.name}</p>
+        <button class="btn btn-sm btn-outline-light w-100 py-0" style="font-size:0.75rem;" onclick="showView('catalogo-rines')">Ver Detalles</button>
+      </div>
     </div>
   `).join('');
 }
@@ -78,9 +84,11 @@ function renderPricingPanel(){
 function renderHomeCars(){
   const grid = document.getElementById('homeCarsGrid');
   grid.innerHTML = cars.slice(0, 8).map(c => `
-    <div class="thumb-card" onclick="openPersonalizar(${c.id})">
-      <img src="${c.img}" alt="${c.name}">
-      <p>${c.name}</p>
+    <div class="col-6 col-md-3">
+      <div class="bg-surface border border-custom rounded-3 overflow-hidden cursor-pointer" onclick="openPersonalizar(${c.id})">
+        <img src="${c.img}" class="w-100 object-fit-cover" style="height:120px;" alt="${c.name}">
+        <p class="p-2 m-0 small fw-semibold text-truncate">${c.name}</p>
+      </div>
     </div>
   `).join('');
 }
@@ -89,12 +97,16 @@ function renderHomeCars(){
 function renderCarsCatalog(){
   const grid = document.getElementById('carsGrid');
   grid.innerHTML = cars.map(c => `
-    <div class="car-card">
-      <img src="${c.img}" alt="${c.name}">
-      <div class="car-card-body">
-        <h3>${c.name}</h3>
-        <p>${c.desc}</p>
-        <button class="btn-outline full-width" onclick="openPersonalizar(${c.id})">Personalizar</button>
+    <div class="col-md-4">
+      <div class="bg-surface border border-custom rounded-4 overflow-hidden h-100 d-flex flex-column justify-content-between">
+        <img src="${c.img}" class="w-100 object-fit-cover" style="height:180px;" alt="${c.name}">
+        <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
+          <div>
+            <h3 class="fs-5 mb-1">${c.name}</h3>
+            <p class="small text-secondary mb-3">${c.desc}</p>
+          </div>
+          <button class="btn btn-outline-red w-100 fw-semibold" onclick="openPersonalizar(${c.id})">Personalizar</button>
+        </div>
       </div>
     </div>
   `).join('');
@@ -104,11 +116,15 @@ function renderCarsCatalog(){
 function renderRinesCatalog(){
   const grid = document.getElementById('rinesGrid');
   grid.innerHTML = rines.map(r => `
-    <div class="rim-card">
-      <div class="rim-thumb"><img src="${r.img}" alt="${r.name}"></div>
-      <h4>${r.name}</h4>
-      <p class="rim-price">${formatPrice(r.price)}</p>
-      <button class="btn-primary full-width" onclick="addRimToCart(${r.id})">Agregar al Carrito</button>
+    <div class="col-md-4">
+      <div class="bg-surface border border-custom rounded-4 p-3 text-center h-100 d-flex flex-column justify-content-between">
+        <div>
+          <img src="${r.img}" class="rounded-circle object-fit-cover mb-3" style="width:120px; height:120px;" alt="${r.name}">
+          <h4 class="fs-5 mb-1">${r.name}</h4>
+          <p class="text-red fw-semibold mb-3">${formatPrice(r.price)}</p>
+        </div>
+        <button class="btn btn-red w-100 fw-semibold" onclick="addRimToCart(${r.id})">Agregar al Carrito</button>
+      </div>
     </div>
   `).join('');
 }
@@ -124,36 +140,33 @@ function openPersonalizar(carId){
 function renderPersonalizar(){
   const car = findCar(state.selectedCarId);
 
-  // Selector de carro
   const select = document.getElementById('personalizeCarSelect');
   select.innerHTML = cars.map(c => `<option value="${c.id}" ${c.id === car.id ? 'selected' : ''}>${c.name}</option>`).join('');
 
-  // Vista previa
   document.getElementById('personalizeCarImg').src = car.img;
 
-  // Swatches de color
   document.getElementById('colorSwatches').innerHTML = colors.map(c => `
     <div class="swatch ${c.hex === state.selectedColor ? 'active' : ''}"
          style="background:${c.hex}" title="${c.name}"
          onclick="selectColor('${c.hex}')"></div>
   `).join('');
 
-  // Opciones de rines
   document.getElementById('rimOptions').innerHTML = rines.map(r => `
-    <div class="rim-option ${r.id === state.selectedRimId ? 'active' : ''}" onclick="selectRim(${r.id})">
-      <img src="${r.img}" alt="${r.name}">
-      ${r.name}
+    <div class="col-4">
+      <div class="rim-option ${r.id === state.selectedRimId ? 'active' : ''}" onclick="selectRim(${r.id})">
+        <img src="${r.img}" class="rounded-circle object-fit-cover mb-1" style="width:40px; height:40px;" alt="${r.name}">
+        <div class="text-truncate">${r.name}</div>
+      </div>
     </div>
   `).join('');
 
-  // Resumen
   const rim = findRim(state.selectedRimId);
   const total = car.price + (rim ? rim.price : 0);
   document.getElementById('personalizeSummary').innerHTML = `
-    <p><strong>${car.name}</strong></p>
-    <p>Color: ${colorName(state.selectedColor)}</p>
-    <p>Rines: ${rim ? rim.name : 'Sin seleccionar'}</p>
-    <p style="color:var(--red); font-weight:600; margin-top:8px;">Total: ${formatPrice(total)}</p>
+    <p class="fw-bold text-white mb-1">${car.name}</p>
+    <p class="mb-1">Color: ${colorName(state.selectedColor)}</p>
+    <p class="mb-1">Rines: ${rim ? rim.name : 'Sin seleccionar'}</p>
+    <p class="text-red fw-semibold mt-2 mb-0">Total: ${formatPrice(total)}</p>
   `;
 }
 
@@ -203,7 +216,7 @@ function updateCartBadge(){
   const badge = document.getElementById('cartBadge');
   const count = state.cart.reduce((s, i) => s + i.qty, 0);
   badge.textContent = count;
-  badge.style.display = count > 0 ? 'flex' : 'none';
+  badge.style.display = count > 0 ? 'inline-block' : 'none';
 }
 
 function cartTotal(){
@@ -213,22 +226,22 @@ function cartTotal(){
 function renderCart(){
   const container = document.getElementById('cartItems');
   if (state.cart.length === 0){
-    container.innerHTML = '<p class="empty-msg">Tu carrito está vacío.</p>';
+    container.innerHTML = '<p class="text-secondary text-center py-5 m-0">Tu carrito está vacío.</p>';
   } else {
     container.innerHTML = state.cart.map((item, i) => `
-      <div class="cart-row">
-        <img src="${item.img}" alt="${item.name}">
-        <div class="cart-info">
-          <h4>${item.name}</h4>
-          <p>${item.detail}</p>
+      <div class="bg-surface border border-custom rounded-3 p-3 d-flex align-items-center gap-3">
+        <img src="${item.img}" class="rounded-2 object-fit-cover" style="width:70px; height:70px;" alt="${item.name}">
+        <div class="flex-grow-1">
+          <h4 class="fs-6 mb-1">${item.name}</h4>
+          <p class="small text-secondary m-0">${item.detail}</p>
         </div>
-        <div class="qty-control">
-          <button onclick="changeQty(${i}, -1)">−</button>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm btn-outline-light px-2 py-0" onclick="changeQty(${i}, -1)">−</button>
           <span>${item.qty}</span>
-          <button onclick="changeQty(${i}, 1)">+</button>
+          <button class="btn btn-sm btn-outline-light px-2 py-0" onclick="changeQty(${i}, 1)">+</button>
         </div>
-        <p>${formatPrice(item.price * item.qty)}</p>
-        <button class="remove-btn" onclick="removeItem(${i})">Eliminar</button>
+        <p class="m-0 fw-semibold">${formatPrice(item.price * item.qty)}</p>
+        <button class="btn btn-sm text-danger" onclick="removeItem(${i})">Eliminar</button>
       </div>
     `).join('');
   }
@@ -258,7 +271,10 @@ function goToPayment(){
 /* ---------- PAGO ---------- */
 function renderPaymentSummary(){
   document.getElementById('paymentSummaryList').innerHTML = state.cart.map(item => `
-    <div class="order-line"><span>${item.name} x${item.qty}</span><span>${formatPrice(item.price * item.qty)}</span></div>
+    <div class="d-flex justify-content-between small text-secondary">
+      <span>${item.name} x${item.qty}</span>
+      <span>${formatPrice(item.price * item.qty)}</span>
+    </div>
   `).join('');
   document.getElementById('paymentTotal').textContent = formatPrice(cartTotal());
 }
@@ -273,7 +289,7 @@ function handlePaymentSubmit(e){
 
 function backToHomeAfterPayment(){
   document.getElementById('paymentForm').reset();
-  document.getElementById('paymentLayout').style.display = 'grid';
+  document.getElementById('paymentLayout').style.display = 'flex';
   document.getElementById('paymentSuccess').style.display = 'none';
   showView('home');
 }
@@ -284,10 +300,16 @@ function setAuthMode(mode){
   const isRegistro = mode === 'registro';
   document.getElementById('authTitle').textContent = isRegistro ? 'Crear Cuenta' : 'Iniciar Sesión';
   document.getElementById('confirmPasswordGroup').style.display = isRegistro ? 'block' : 'none';
-  document.getElementById('termsGroup').style.display = isRegistro ? 'flex' : 'none';
+  document.getElementById('termsGroup').style.display = isRegistro ? 'block' : 'none';
   document.getElementById('authSubmitBtn').textContent = isRegistro ? 'Registrarme' : 'Iniciar Sesión';
-  document.getElementById('tabLogin').classList.toggle('active', !isRegistro);
-  document.getElementById('tabRegistro').classList.toggle('active', isRegistro);
+  
+  const tabLogin = document.getElementById('tabLogin');
+  const tabRegistro = document.getElementById('tabRegistro');
+  
+  tabLogin.classList.toggle('active', !isRegistro);
+  tabLogin.classList.toggle('text-secondary', isRegistro);
+  tabRegistro.classList.toggle('active', isRegistro);
+  tabRegistro.classList.toggle('text-secondary', !isRegistro);
 }
 
 function handleAuthSubmit(e){
