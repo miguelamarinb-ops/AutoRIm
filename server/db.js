@@ -1,14 +1,18 @@
 import mysql from 'mysql2/promise'
 
 const uri = process.env.DATABASE_URL?.replace(/^mysql\+\w+:/, 'mysql:')
+const dbHost = process.env.DB_HOST || '127.0.0.1'
+const usaSsl = Boolean(uri) || (dbHost !== '127.0.0.1' && dbHost !== 'localhost')
+
 export const pool = mysql.createPool({
   ...(uri ? { uri } : {
-    host: process.env.DB_HOST || '127.0.0.1',
+    host: dbHost,
     port: Number(process.env.DB_PORT) || 3306,
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD ?? '',
     database: process.env.DB_NAME || 'autorim',
   }),
+  ...(usaSsl ? { ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true } } : {}),
   charset: 'utf8mb4',
   waitForConnections: true,
   connectionLimit: 10,
