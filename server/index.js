@@ -13,6 +13,17 @@ const app = express()
 app.disable('x-powered-by')
 app.set('trust proxy', 1)
 app.use(express.json({ limit: '50kb' }))
+
+// Permitir peticiones desde el frontend en Render (CORS)
+app.use((req, res, next) => {
+  const origin = process.env.CORS_ORIGIN || '*'
+  res.setHeader('Access-Control-Allow-Origin', origin)
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  if (req.method === 'OPTIONS') return res.sendStatus(204)
+  next()
+})
+
 const ah = fn => (req, res, next) => fn(req, res, next).catch(next)
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
