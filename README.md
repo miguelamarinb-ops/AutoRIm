@@ -1,5 +1,11 @@
 # AutoRim (Vue 3 + Bootstrap 5 + Express + MySQL)
 
+<<<<<<< HEAD
+## Puesta en marcha
+1. Importar en MySQL (phpMyAdmin → Importar), en este orden: `autorim.sql` (estructura), `autorim_insert.sql` (datos de prueba, opcional) y `database/autorim_pagos.sql` (tabla de pagos).
+2. Copiar `.env.example` como `.env` y completar `DB_PASSWORD` (si tiene) y `JWT_SECRET`.
+3. Instalar y arrancar:
+=======
 ## Puesta en marcha (con XAMPP)
 1. Abre el panel de XAMPP y pulsa **Start** en **MySQL**. Apache solo hace falta si quieres abrir phpMyAdmin.
 2. En `http://localhost/phpmyadmin` ve a **Importar** (sin seleccionar ninguna base) y sube estos archivos, en este orden:
@@ -17,10 +23,19 @@
        JWT_SECRET=una-frase-secreta-de-mas-de-16-caracteres
 
 4. Instala y arranca:
+>>>>>>> d1cd00e0cf097513a2723dae9e3d185edd4befb2
 
        npm install
        npm run dev        # web en http://localhost:5173 + API en http://127.0.0.1:3001
 
+<<<<<<< HEAD
+4. Crear el administrador (opción rápida con XAMPP: importar `database/autorim_admin.sql` en phpMyAdmin; datos dentro del archivo). O por comando (el código y la clave se guardan con hash en MB_DG_USUARIOS):
+
+       npm run crear-admin -- admin@autorim.com "UnaClaveSegura1" "CODIGO-DE-ACCESO"
+
+## Panel de administración (/#/admin)
+- **Pedidos:** resumen y listado (vistas de MySQL).
+=======
 ## Acceso de administrador
 
 El archivo `database/autorim_admin.sql` crea este administrador:
@@ -61,6 +76,7 @@ Los clientes de demostración son `cliente1@demo.com`, `cliente2@demo.com` y `cl
 ## Panel de administración (/#/admin)
 - **Pedidos:** resumen y listado (vistas de MySQL).
 - **Reportes:** usuarios, compradores y ventas mensuales por producto.
+>>>>>>> d1cd00e0cf097513a2723dae9e3d185edd4befb2
 - **Tablas (CRUD):** insertar, consultar (con búsqueda y paginación), actualizar y eliminar en las 11 tablas del modelo
   (usuarios, autos, colores, acabados, rines, llantas, medidas, configuraciones, pedidos, renglones y pagos).
   Las llaves foráneas se eligen en listas; las contraseñas se guardan con hash. Cada cambio queda en la auditoría con el usuario que lo hizo.
@@ -68,12 +84,15 @@ Los clientes de demostración son `cliente1@demo.com`, `cliente2@demo.com` y `cl
   detalle antes/después, exportación a CSV e impresión. La tabla de auditoría es de solo lectura (los triggers lo impiden).
 - Pruebas de la lógica del CRUD (no necesitan base de datos): `npm test`.
 
+<<<<<<< HEAD
+=======
 ## Seguridad del acceso de administrador
 - El login normal (`/api/auth/login`) siempre entrega un token de cliente, aunque la cuenta sea de administrador. Solo devuelve el rol para que la web sepa a dónde redirigir.
 - Únicamente `/api/auth/admin-login` (correo + contraseña + código de acceso) entrega el token de administrador (8 horas), y es el único que aceptan las rutas `/api/admin/*`.
 - Mostrar el enlace "Panel de administración" en la barra es solo una comodidad de navegación: no da permisos.
 - Máximo 8 intentos fallidos de inicio de sesión cada 15 minutos por IP.
 
+>>>>>>> d1cd00e0cf097513a2723dae9e3d185edd4befb2
 ## Cómo está conectado
 - `server/index.js`: API (catálogo, registro/login, pedidos, panel admin). Todo con consultas parametrizadas.
 - El catálogo (autos, colores, acabados, rines, llantas, medidas) se carga de MySQL al abrir la web (`src/store.js`).
@@ -82,6 +101,14 @@ Los clientes de demostración son `cliente1@demo.com`, `cliente2@demo.com` y `cl
 - Los triggers de auditoría reciben el usuario con `SET @app_usuario_id`.
 - Pagos: tabla `MB_DG_PAGOS`, se guarda en la misma transacción que el pedido (con auditoría). La pasarela es simulada (aprueba siempre);
   para una real, cambia el INSERT en `server/index.js`. Solo se guarda marca y últimos 4 dígitos; nunca número completo ni CVV.
+<<<<<<< HEAD
+- Usuarios de prueba del insert: cualquier correo `@example.com` con la clave `Cliente123`.
+
+## Backends (Node y Python)
+Ambos exponen la misma API en `:3001` y comparten `.env`, base de datos, JWT y hashes bcrypt.
+- Node: `npm install && npm test && npm run dev:api`
+- Python: `cd backend-python && pip install -r requirements.txt && pytest && python app.py`
+=======
 
 ## Backends (Node y Python)
 Ambos exponen la misma API en `:3001` y comparten `.env`, base de datos, JWT y hashes bcrypt. Usa solo uno a la vez.
@@ -94,3 +121,4 @@ Ambos exponen la misma API en `:3001` y comparten `.env`, base de datos, JWT y h
 - **Error por `JWT_SECRET`:** falta crearlo en `.env` (mínimo 16 caracteres).
 - **"Correo, contraseña o código incorrectos":** revisa los tres datos, o corre `npm run ver-admins`. Si no aparece el administrador, importa de nuevo `database/autorim_admin.sql`.
 - **"Demasiados intentos":** espera unos minutos; el límite es por IP.
+>>>>>>> d1cd00e0cf097513a2723dae9e3d185edd4befb2
